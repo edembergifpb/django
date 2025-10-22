@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{% static 'edu/css/form.css' %}">
+  <title>Alunos</title>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Lista de Alunos</h1>
+    <p><a href="{% url 'edu:student_create' %}">Criar novo aluno</a></p>
+    <table style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #e6e9ee;">Matrícula</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #e6e9ee;">Nome</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #e6e9ee;">Email</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #e6e9ee;">Curso</th>
+          <th style="text-align:left; padding:8px; border-bottom:1px solid #e6e9ee;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in students %}
+        <tr>
+          <td style="padding:8px; border-bottom:1px solid #f4f6f8;">{{ s.matricula }}</td>
+          <td style="padding:8px; border-bottom:1px solid #f4f6f8;">{{ s.nome }}</td>
+          <td style="padding:8px; border-bottom:1px solid #f4f6f8;">{{ s.email }}</td>
+          <td style="padding:8px; border-bottom:1px solid #f4f6f8;">{% if s.curso %}{{ s.curso.nome }}{% else %}&ndash;{% endif %}</td>
+          <td style="padding:8px; border-bottom:1px solid #f4f6f8;">
+            <a href="{% url 'edu:student_update' s.pk %}">Editar</a> |
+            <a href="{% url 'edu:student_delete' s.pk %}">Remover</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Nenhum aluno cadastrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

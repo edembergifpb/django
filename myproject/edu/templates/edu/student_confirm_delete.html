@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{% static 'edu/css/form.css' %}">
+  <title>Remover Aluno</title>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Remover Aluno</h1>
+    <p>Tem certeza que deseja remover <strong>{{ student }}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-actions">
+        <button type="submit" class="btn">Confirmar remoção</button>
+      </div>
+    </form>
+    <p><a href="{% url 'edu:student_list' %}">Cancelar</a></p>
+  </div>
+</body>
+</html>
