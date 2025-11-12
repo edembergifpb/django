@@ -19,7 +19,18 @@ def course_create(request):
 
 def list_courses(request):
     from .models import Curso
-    cursos = Curso.objects.all()
+    from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+    cursos_list = Curso.objects.all().order_by('nome')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(cursos_list, 5)  # 5 cursos por página
+    try:
+        cursos = paginator.page(page)
+    except PageNotAnInteger:
+        cursos = paginator.page(1)
+    except EmptyPage:
+        cursos = paginator.page(paginator.num_pages)
+
     return render(request, 'edu/course_list.html', {'cursos': cursos})
 
 def edit_course(request, id):

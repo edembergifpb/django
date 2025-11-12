@@ -2,11 +2,37 @@
 {% block titulo %}Lista de Cursos{% endblock %}
 {% block conteudo %}
     <h1>Lista de Cursos</h1>
-    <ul>
-        {% for curso in cursos %}
-            <li>{{ curso.nome }}</li> <a href="{% url 'edu:edit_course' curso.id %}">Editar</a>
-        {% empty %}
-            <li>Nenhum curso disponível.</li>
-        {% endfor %}
-    </ul>
+        <ul>
+                {% for curso in cursos %}
+                        <li>{{ curso.nome }}</li> <a href="{% url 'edu:edit_course' curso.id %}">Editar</a>
+                {% empty %}
+                        <li>Nenhum curso disponível.</li>
+                {% endfor %}
+        </ul>
+
+        {% if cursos.has_other_pages %}
+        <nav class="pagination" aria-label="Page navigation">
+            <ul style="list-style:none; display:flex; gap:8px; padding:0;">
+                {% if cursos.has_previous %}
+                    <li><a href="?page={{ cursos.previous_page_number }}">&laquo; Anterior</a></li>
+                {% else %}
+                    <li style="opacity:0.5">&laquo; Anterior</li>
+                {% endif %}
+
+                {% for num in cursos.paginator.page_range %}
+                    {% if num == cursos.number %}
+                        <li><strong>{{ num }}</strong></li>
+                    {% else %}
+                        <li><a href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if cursos.has_next %}
+                    <li><a href="?page={{ cursos.next_page_number }}">Próximo &raquo;</a></li>
+                {% else %}
+                    <li style="opacity:0.5">Próximo &raquo;</li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
 {% endblock %}
