@@ -1,12 +1,20 @@
 from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
-from .forms import CursoForm, StudentForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.http import HttpResponseNotAllowed
+from .forms import CursoForm, StudentForm, SignUpForm, SignInForm
 
 # Create your views here.
 def home(request):
     return render(request, "edu/home.html")
 
 
+from django.http import HttpResponseNotAllowed
+
+
+@login_required
 def course_create(request):
     if request.method == 'POST':
         form = CursoForm(request.POST)
@@ -33,6 +41,7 @@ def list_courses(request):
 
     return render(request, 'edu/course_list.html', {'cursos': cursos})
 
+@login_required
 def edit_course(request, id):
     from .models import Curso
     curso = Curso.objects.get(id=id)
@@ -83,3 +92,37 @@ def student_delete(request, pk):
         student.delete()
         return redirect('edu:student_list')
     return render(request, 'edu/student_confirm_delete.html', {'student': student})
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('edu:home')
+    else:
+        form = SignUpForm()
+    return render(request, 'edu/sign_up.html', {'form': form})
+
+
+def signin_view(request):
+    if request.method == 'POST':
+        form = SignInForm(request=request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            next_url = request.POST.get('next') or request.GET.get('next')
+            if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
+            return redirect('edu:home')
+    else:
+        form = SignInForm()
+    return render(request, 'edu/sign_in.html', {'form': form})
+
+
+def logout_view(request):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    logout(request)
+    return redirect('edu:signin')

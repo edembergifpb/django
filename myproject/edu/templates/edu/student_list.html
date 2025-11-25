@@ -1,12 +1,6 @@
-{% load static %}
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="{% static 'edu/css/form.css' %}">
-  <title>Alunos</title>
-</head>
-<body>
+{% extends 'global/home.html' %}
+{% block titulo %}Lista de Alunos{% endblock %}
+{% block conteudo %}
   <div class="form-container">
     <h1>Lista de Alunos</h1>
     <p><a href="{% url 'edu:student_create' %}">Criar novo aluno</a></p>
@@ -38,5 +32,4 @@
       </tbody>
     </table>
   </div>
-</body>
-</html>
+{% endblock %}

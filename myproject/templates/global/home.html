@@ -6,6 +6,33 @@
     <title>{%block titulo%}Home Global{%endblock%}</title>
 </head>
 <body>
+    <header style="background:#f7f9fc;padding:12px;border-bottom:1px solid #e6e9ee;">
+        <div style="max-width:980px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+                <a href="/">MyApp</a>
+            </div>
+            <div>
+                {% if request.user.is_authenticated %}
+                    <nav style="display:inline-block;margin-right:12px;">
+                        <a href="{% url 'edu:home' %}">Dashboard</a> |
+                        <a href="{% url 'edu:list_courses' %}">Cursos</a> |
+                        <a href="{% url 'edu:student_list' %}">Alunos</a>
+                    </nav>
+                    <span style="margin-right:8px;">Olá, {{ request.user.username }}</span>
+                    <form method="post" action="{% url 'edu:logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none;border:none;color:#2563eb;cursor:pointer;padding:0">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'edu:signin' %}">Entrar</a> |
+                    <a href="{% url 'edu:signup' %}">Registrar</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main>
     {%block conteudo%}Body de Global{%endblock%}
+    </main>
 </body>
 </html>

@@ -13,4 +13,8 @@ urlpatterns = [
     path('students/create/', views.student_create, name='student_create'),
     path('students/<str:pk>/edit/', views.student_update, name='student_update'),
     path('students/<str:pk>/delete/', views.student_delete, name='student_delete'),
+    # Auth
+    path('signup/', views.signup_view, name='signup'), #Registrar usuário
+    path('signin/', views.signin_view, name='signin'), #Login do usuário
+    path('logout/', views.logout_view, name='logout'), #Logout do usuário
 ]

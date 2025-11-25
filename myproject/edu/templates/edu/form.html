@@ -1,12 +1,6 @@
-{% load static %}
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="{% static 'edu/css/form.css' %}">
-  <title>Criar Curso</title>
-</head>
-<body>
+{% extends 'global/home.html' %}
+{% block titulo %}Criar Curso{% endblock %}
+{% block conteudo %}
   <div class="form-container">
     <h1>Criar Curso</h1>
     <form method="post" novalidate>
@@ -24,5 +18,4 @@
       </div>
     </form>
   </div>
-</body>
-</html>
+{% endblock %}

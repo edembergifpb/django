@@ -120,6 +120,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# URL usada pelo decorator @login_required para redirecionar usuários não autenticados
+LOGIN_URL = '/edu/signin/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
