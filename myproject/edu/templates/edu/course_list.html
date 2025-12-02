@@ -2,12 +2,22 @@
 {% block titulo %}Lista de Cursos{% endblock %}
 {% block conteudo %}
         <h1>Lista de Cursos</h1>
+                {% if perms.edu.add_curso %}
+                    <p><a href="{% url 'edu:course_create' %}">Criar novo curso</a></p>
+                {% endif %}
         <ul>
-                {% for curso in cursos %}
-                        <li>{{ curso.nome }}</li> <a href="{% url 'edu:edit_course' curso.id %}">Editar</a>
-                {% empty %}
-                        <li>Nenhum curso disponível.</li>
-                {% endfor %}
+            {% for curso in cursos %}
+                <li>{{ curso.nome }}
+                    {% if perms.edu.change_curso %}
+                        - <a href="{% url 'edu:edit_course' curso.id %}">Editar</a>
+                    {% endif %}
+                    {% if perms.edu.delete_curso %}
+                        - <a href="{% url 'edu:delete_course' curso.id %}">Remover</a>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Nenhum curso disponível.</li>
+            {% endfor %}
         </ul>
 
         {% if cursos.has_other_pages %}

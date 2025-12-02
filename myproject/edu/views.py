@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.conf import settings
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.http import HttpResponseNotAllowed
 from .forms import CursoForm, StudentForm, SignUpForm, SignInForm
@@ -14,7 +15,7 @@ def home(request):
 from django.http import HttpResponseNotAllowed
 
 
-@login_required
+@permission_required('edu.add_curso')
 def course_create(request):
     if request.method == 'POST':
         form = CursoForm(request.POST)
@@ -41,7 +42,7 @@ def list_courses(request):
 
     return render(request, 'edu/course_list.html', {'cursos': cursos})
 
-@login_required
+@permission_required('edu.change_curso')
 def edit_course(request, id):
     from .models import Curso
     curso = Curso.objects.get(id=id)
@@ -59,6 +60,16 @@ def student_list(request):
     from .models import Student
     students = Student.objects.select_related('curso').all()
     return render(request, 'edu/student_list.html', {'students': students})
+
+
+@permission_required('edu.delete_curso')
+def delete_course(request, id):
+    from .models import Curso
+    curso = get_object_or_404(Curso, id=id)
+    if request.method == 'POST':
+        curso.delete()
+        return redirect('edu:list_courses')
+    return render(request, 'edu/course_confirm_delete.html', {'curso': curso})
 
 
 def student_create(request):

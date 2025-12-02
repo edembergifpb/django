@@ -1,0 +1,15 @@
+{% extends 'global/home.html' %}
+{% block titulo %}Remover Curso{% endblock %}
+{% block conteudo %}
+  <div class="form-container">
+    <h1>Remover Curso</h1>
+    <p>Tem certeza que deseja remover o curso <strong>{{ curso.nome }}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-actions">
+        <button type="submit" class="btn">Confirmar remoção</button>
+      </div>
+    </form>
+    <p><a href="{% url 'edu:list_courses' %}">Cancelar</a></p>
+  </div>
+{% endblock %}

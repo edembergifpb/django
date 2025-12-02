@@ -17,6 +17,7 @@
                         <a href="{% url 'edu:home' %}">Dashboard</a> |
                         <a href="{% url 'edu:list_courses' %}">Cursos</a> |
                         <a href="{% url 'edu:student_list' %}">Alunos</a>
+                        {% if perms.edu.add_curso %} | <a href="{% url 'edu:course_create' %}">Criar Curso</a>{% endif %}
                     </nav>
                     <span style="margin-right:8px;">Olá, {{ request.user.username }}</span>
                     <form method="post" action="{% url 'edu:logout' %}" style="display:inline;">
