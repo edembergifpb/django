@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'edu'
@@ -18,4 +18,6 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'), #Registrar usuário
     path('signin/', views.signin_view, name='signin'), #Login do usuário
     path('logout/', views.logout_view, name='logout'), #Logout do usuário
+    #API    
+    path("api/", include("edu.api_urls")),
 ]
