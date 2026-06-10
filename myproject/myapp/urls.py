@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include   
 from django.shortcuts import render
+from django.conf.urls.i18n import i18n_patterns
+
 
 def index(request):
     return render(request, "global/home.html")
@@ -26,5 +28,6 @@ urlpatterns = [
     path("", index),
     path("polls/", include("polls.urls")),
     path("edu/", include("edu.urls")),
+    path('i18n/',include('django.conf.urls.i18n'))
 ]
 

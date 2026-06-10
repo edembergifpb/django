@@ -1,22 +1,26 @@
 {% extends 'global/home.html' %}
-{% block titulo %}Lista de Cursos{% endblock %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block titulo %} {% translate "List of courses" %}{% endblock %}
+
 {% block conteudo %}
-        <h1>Lista de Cursos</h1>
+        <p>Idioma atual: {{ LANGUAGE_CODE }}</p>
+        <h1> {% translate "List of courses" %}</h1>
                 {% if perms.edu.add_curso %}
-                    <p><a href="{% url 'edu:course_create' %}">Criar novo curso</a></p>
+                    <p><a href="{% url 'edu:course_create' %}"> {% translate "Register a course" %}</a></p>
                 {% endif %}
         <ul>
             {% for curso in cursos %}
                 <li>{{ curso.nome }}
                     {% if perms.edu.change_curso %}
-                        - <a href="{% url 'edu:edit_course' curso.id %}">Editar</a>
+                        - <a href="{% url 'edu:edit_course' curso.id %}"> {% translate "Edit" %}</a>
                     {% endif %}
                     {% if perms.edu.delete_curso %}
-                        - <a href="{% url 'edu:delete_course' curso.id %}">Remover</a>
+                        - <a href="{% url 'edu:delete_course' curso.id %}">{% translate "Delete" %}</a>
                     {% endif %}
                 </li>
             {% empty %}
-                <li>Nenhum curso disponível.</li>
+                <li> {% translate "No courses registered" %}</li>
             {% endfor %}
         </ul>
 
@@ -24,9 +28,9 @@
         <nav class="pagination" aria-label="Page navigation">
             <ul style="list-style:none; display:flex; gap:8px; padding:0;">
                 {% if cursos.has_previous %}
-                    <li><a href="?page={{ cursos.previous_page_number }}">&laquo; Anterior</a></li>
+                    <li><a href="?page={{ cursos.previous_page_number }}">&laquo; {% translate "Previous" %}</a></li>
                 {% else %}
-                    <li style="opacity:0.5">&laquo; Anterior</li>
+                    <li style="opacity:0.5">&laquo;  {% translate "Previous" %}</li>
                 {% endif %}
 
                 {% for num in cursos.paginator.page_range %}
@@ -38,9 +42,9 @@
                 {% endfor %}
 
                 {% if cursos.has_next %}
-                    <li><a href="?page={{ cursos.next_page_number }}">Próximo &raquo;</a></li>
+                    <li><a href="?page={{ cursos.next_page_number }}"> {% translate "Next" %} &raquo;</a></li>
                 {% else %}
-                    <li style="opacity:0.5">Próximo &raquo;</li>
+                    <li style="opacity:0.5"> {% translate "Next" %} &raquo;</li>
                 {% endif %}
             </ul>
         </nav>

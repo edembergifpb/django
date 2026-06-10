@@ -29,7 +29,6 @@ def course_create(request):
 def list_courses(request):
     from .models import Curso
     from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
     cursos_list = Curso.objects.all().order_by('nome')
     page = request.GET.get('page', 1)
     paginator = Paginator(cursos_list, 5)  # 5 cursos por página
